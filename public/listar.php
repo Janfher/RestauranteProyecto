@@ -72,7 +72,7 @@
                         <p class="mt-2">Añade nuevos empleados al equipo.</p>
                     </a>
                     <!-- Tarjeta de Ver Categorías -->
-                    <a href="ver_categorias.php" class="block bg-[#dfded9] hover:bg-[#ed2839] text-[#191d20] hover:text-white p-6 rounded-lg shadow-lg transform hover:scale-105 transition-transform duration-300">
+                    <a href="./php/ver_categorias.php" class="block bg-[#dfded9] hover:bg-[#ed2839] text-[#191d20] hover:text-white p-6 rounded-lg shadow-lg transform hover:scale-105 transition-transform duration-300">
                         <h3 class="text-xl font-bold">Ver Categorías</h3>
                         <p class="mt-2">Consulta las categorías registradas.</p>
                     </a>
