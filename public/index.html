@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Administrar Categorías de Comida Rápida</title>
+    <link href="../public/css/tailwind.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 p-6">
+    <div class="max-w-4xl mx-auto bg-white shadow-lg rounded-lg p-6">
+        <h1 class="text-3xl font-bold mb-6 text-center text-gray-800">CARNE AL FUEGO</h1>
+        <form id="formAgregarCategoria" class="mb-8" enctype="multipart/form-data">
+            <div class="mb-4">
+                <label class="block text-gray-700 text-sm font-bold mb-2">Nombre de la Categoría:</label>
+                <input type="text" name="nombre_categoria" class="rounded-lg border-gray-300 w-full px-4 py-2 mb-2" required>
+            </div>
+            <div class="mb-4">
+                <label class="block text-gray-700 text-sm font-bold mb-2">Descripción de la Categoría:</label>
+                <textarea name="descripcion_categoria" class="rounded-lg border-gray-300 w-full px-4 py-2 mb-2"></textarea>
+            </div>
+            
+            <div class="mb-4">
+                <label class="block text-gray-700 text-sm font-bold mb-2">Imagen de la Categoría:</label>
+                <input type="file" name="imagen_categoria" class="rounded-lg border-gray-300 w-full px-4 py-2 mb-2" required>
+            </div>
+            <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full w-full">Agregar Categoría</button>
+        </form>
+        <div id="listaCategorias" class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+            <!-- Aquí se cargará la lista de categorías desde JavaScript -->
+        </div>
+        <form id="formActualizarCategoria" class="mb-8" style="display:none;">
+            <input type="hidden" name="id_categoria">
+            <div class="mb-4">
+                <label class="block text-gray-700 text-sm font-bold mb-2">Nuevo Nombre de la Categoría:</label>
+                <input type="text" name="nombre_categoria_actualizar" class="rounded-lg border-gray-300 w-full px-4 py-2 mb-2" required>
+            </div>
+            <div class="mb-4">
+                <label class="block text-gray-700 text-sm font-bold mb-2">Nueva Descripción de la Categoría:</label>
+                <textarea name="descripcion_categoria_actualizar" class="rounded-lg border-gray-300 w-full px-4 py-2 mb-2"></textarea>
+            </div>
+            <div class="mb-4">
+                <label class="block text-gray-700 text-sm font-bold mb-2">Nueva Imagen de la Categoría:</label>
+                <input type="file" name="imagen_categoria_actualizar" class="rounded-lg border-gray-300 w-full px-4 py-2 mb-2">
+            </div>
+            <button type="submit" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-full w-full">Actualizar Categoría</button>
+        </form>
+        
+    </div>
+    <script src="main.js"></script>
+</body>
+</html>
