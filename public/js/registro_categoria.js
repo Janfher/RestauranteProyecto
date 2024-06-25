@@ -8,6 +8,13 @@ function validarFormulario() {
         return false;
     }
 
+    // Validar que el nombre no contenga números ni caracteres especiales (excepto la ñ)
+    var nombreValido = /^[a-zA-ZñÑ\s]+$/.test(nombre);
+    if (!nombreValido) {
+        mostrarMensaje("El nombre de la categoría solo puede contener letras y espacios.");
+        return false;
+    }
+
     // Crear FormData para enviar los datos del formulario
     var formData = new FormData();
     formData.append("nombre", nombre);

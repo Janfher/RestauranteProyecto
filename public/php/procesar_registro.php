@@ -1,42 +1,27 @@
-<?php
-include 'conexion.php'; // Incluir archivo de conexión
-
-// Verificar si se ha enviado el formulario y los campos obligatorios están presentes
-if ($_SERVER["REQUEST_METHOD"] == "GET" && !empty($_FILES["imagen"]["name"]) && !empty($_GET["nombre"]) && !empty($_GET["descripcion"])) {
-    // Preparar datos para la inserción
-    $nombre = $conn->real_escape_string($_GET["nombre"]);
-    $descripcion = $conn->real_escape_string($_GET["descripcion"]);
-    $imagen_nombre = $_FILES["imagen"]["name"];
-    $imagen_tmp = $_FILES["imagen"]["tmp_name"];
-    $imagen_tipo = $_FILES["imagen"]["type"];
-
-    // Directorio donde se guardará la imagen (asegúrate de que exista)
-    $upload_dir = '../img/';
-
-    // Verificar si el directorio de carga existe, si no, crearlo
-    if (!file_exists($upload_dir)) {
-        mkdir($upload_dir, 0777, true);
-    }
-
-    // Guardar la imagen en una ubicación específica y obtener la ruta
-    $ruta_imagen = $upload_dir . basename($imagen_nombre);
-    if (move_uploaded_file($imagen_tmp, $ruta_imagen)) {
-        // Insertar datos en la base de datos
-        $sql = "INSERT INTO categorias (nombre_categoria, descripcion_categoria, imagen_categoria) 
-                VALUES ('$nombre', '$descripcion', '$ruta_imagen')";
-
-        if ($conn->query($sql) === TRUE) {
-            echo "La categoría se registró correctamente.";
-        } else {
-            echo "Error: " . $sql . "<br>" . $conn->error;
-        }
-    } else {
-        echo "Error al subir el archivo.";
-    }
-} else {
-    echo "Todos los campos son obligatorios.";
-}
-
-// Cerrar conexión
-$conn->close();
-?>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Formulario de Registro de Categoría</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link href="../css/styles.css" rel="stylesheet">
+    <script src="../js/registro_categoria.js"></script>
+</head>
+<body>
+    <div class="main-content">
+        <h2>Registro de Nueva Categoría</h2>
+        <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post" id="registroForm" enctype="multipart/form-data" onsubmit="return validateForm()">
+            <label for="nombre">Nombre de la Categoría:</label>
+            <input type="text" id="nombre" name="nombre" required>
+            
+            <label for="descripcion">Descripción de la Categoría:</label>
+            <textarea id="descripcion" name="descripcion" rows="4" required></textarea>
+            
+            <label for="imagen">Imagen de la Categoría:</label>
+            <input type="file" id="imagen" name="imagen" accept="image/*" required>
+            
+            <button type="submit">Registrar Categoría</button>
+        </form>
+    </div>
+</body>
+</html>
