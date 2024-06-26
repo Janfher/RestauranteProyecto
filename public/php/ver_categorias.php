@@ -11,41 +11,9 @@ include 'conexion.php';
     <title>Categorías Registradas</title>
     <!-- Incluir Tailwind CSS -->
     <link rel="stylesheet" href="../css/tailwind.css"> <!-- Asegúrate de que este enlace apunte correctamente a Tailwind CSS -->
-
-    <script>
-        // Función para mostrar u ocultar el formulario de actualización
-        function toggleForm(id) {
-            var formId = 'form-' + id; // ID del formulario específico
-            var form = document.getElementById(formId); // Obtener el formulario
-
-            // Mostrar u ocultar el formulario
-            if (form.style.display === 'none') {
-                form.style.display = 'block';
-            } else {
-                form.style.display = 'none';
-            }
-        }
-
-        // Función para validar el formulario de actualización antes de enviarlo
-        function validarFormulario(id) {
-            var formId = 'form-' + id; // ID del formulario específico
-            var form = document.getElementById(formId); // Obtener el formulario
-            var nombre = form.nombre.value.trim(); // Obtener el valor del nombre y eliminar espacios en blanco al inicio y final
-
-            // Validar nombre: no debe estar vacío y no debe contener números
-            if (nombre === "") {
-                alert("Por favor, ingrese un nombre para la categoría.");
-                return false;
-            } else if (/^\d+$/.test(nombre)) {
-                alert("El nombre de la categoría no puede contener solo números.");
-                return false;
-            }
-
-            // Puedes agregar más validaciones aquí según sea necesario
-
-            return true; // Permitir el envío del formulario si pasa todas las validaciones
-        }
-    </script>
+    
+    <!-- Incluir el archivo JavaScript -->
+    <script src="../js/formulario_actualizar.js" defer></script>
 </head>
 
 <body class="bg-center bg-cover" style="background-image: url('../img/fondo.jpg'); background-size: 40%; background-position: center;">
@@ -96,13 +64,13 @@ include 'conexion.php';
                             </form>
 
                             <!-- Botón Actualizar y Formulario de Actualización (inicialmente oculto) -->
-                            <button onclick="toggleForm('<?php echo $row["id"]; ?>')" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-2">Actualizar</button>
-                            <form id="form-<?php echo $row["id"]; ?>" onsubmit="return validarFormulario('<?php echo $row["id"]; ?>')" method="POST" action="actualizar_categoria.php" class="form-actualizar bg-gray-100 rounded-lg p-4 mb-4 shadow" style="display: none;" enctype="multipart/form-data">
+                            <button onclick="toggleForm('<?php echo $row["id"]; ?>')" class="bg-blue-500 hover:bg-blue-700 text-black font-bold py-2 px-4 rounded mt-2">Actualizar</button>
+                            <form id="form-<?php echo $row["id"]; ?>" onsubmit="return enviarFormulario('<?php echo $row["id"]; ?>')" method="POST" class="form-actualizar bg-gray-100 rounded-lg p-4 mb-4 shadow" style="display: none;" enctype="multipart/form-data">
                                 <input type="hidden" name="id" value="<?php echo $row["id"]; ?>">
                                 <input type="text" name="nombre" value="<?php echo htmlspecialchars($row["nombre_categoria"]); ?>" class="form-input bg-gray-200 border-2 border-gray-300 py-2 px-4 rounded-md block w-full mb-2" placeholder="Nombre de la categoría">
                                 <textarea name="descripcion" class="form-textarea bg-gray-200 border-2 border-gray-300 py-2 px-4 rounded-md block w-full mb-2" rows="4" placeholder="Descripción"><?php echo htmlspecialchars($row["descripcion_categoria"]); ?></textarea>
                                 <input type="file" name="imagen" class="form-input bg-gray-200 border-2 border-gray-300 py-2 px-4 rounded-md block w-full mb-2">
-                                <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Actualizar</button>
+                                <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Guardar cambios</button>
                             </form>
                         </div>
                         <?php

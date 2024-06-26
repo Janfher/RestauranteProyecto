@@ -1,6 +1,10 @@
 <?php
 include 'conexion.php'; // Incluir archivo de conexión
 
+header('Content-Type: application/json'); // Establecer el encabezado para JSON
+
+$response = array(); // Array para almacenar la respuesta
+
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["id"])) {
     // Obtener los datos del formulario
     $id = $conn->real_escape_string($_POST["id"]);
@@ -24,7 +28,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["id"])) {
             // Actualizar la base de datos con la nueva ruta de imagen
             $sql = "UPDATE categorias SET nombre_categoria='$nombre', descripcion_categoria='$descripcion', imagen_categoria='$ruta_imagen' WHERE id='$id'";
         } else {
-            echo "Error al subir la imagen.";
+            $response['status'] = 'error';
+            $response['message'] = 'Error al subir la imagen.';
+            echo json_encode($response);
             exit; // Salir del script si hay un error con la subida de la imagen
         }
     } else {
@@ -34,13 +40,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["id"])) {
 
     // Ejecutar la consulta SQL para actualizar los datos
     if ($conn->query($sql) === TRUE) {
-        echo "La categoría se actualizó correctamente.";
+        $response['status'] = 'success';
+        $response['message'] = 'La categoría se actualizó correctamente.';
     } else {
-        echo "Error al actualizar la categoría: " . $conn->error;
+        $response['status'] = 'error';
+        $response['message'] = 'Error al actualizar la categoría: ' . $conn->error;
     }
 } else {
-    echo "No se recibieron datos válidos para actualizar.";
+    $response['status'] = 'error';
+    $response['message'] = 'No se recibieron datos válidos para actualizar.';
 }
 
 $conn->close(); // Cerrar la conexión a la base de datos
+
+echo json_encode($response); // Retornar la respuesta en formato JSON
 ?>
