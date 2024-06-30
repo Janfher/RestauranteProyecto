@@ -94,3 +94,8 @@ input, textarea {
 .icon:hover {
     fill: var(--primary-color);
 }
+
+.break-words {
+    word-wrap: break-word;
+    white-space: normal;
+}

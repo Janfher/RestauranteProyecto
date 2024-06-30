@@ -42,7 +42,7 @@ include 'conexion.php';
     <div class="max-w-4xl mx-auto py-12 sm:px-6 lg:px-8 text-[#191d20]">
         <div class="bg-[#dfded9] rounded-lg overflow-hidden shadow-md">
             <h2 class="text-2xl font-bold text-center p-4 bg-[#ed2839] text-white">Categorías Registradas</h2>
-            <div class="p-4">
+            <div class="p-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 <?php
                 // Consultar categorías registradas
                 $sql = "SELECT id, nombre_categoria, descripcion_categoria, imagen_categoria FROM categorias";
@@ -52,25 +52,27 @@ include 'conexion.php';
                     // Mostrar cada categoría como una tarjeta
                     while($row = $result->fetch_assoc()) {
                         ?>
-                        <div class="border rounded-lg p-4 mb-4 bg-white shadow">
-                            <h3 class="text-xl font-bold mb-2 text-[#191d20]"><?php echo $row["nombre_categoria"]; ?></h3>
-                            <p class="text-[#404040] mb-2"><?php echo $row["descripcion_categoria"]; ?></p>
-                            <img src="../img/<?php echo basename($row["imagen_categoria"]); ?>" class="max-w-xs max-h-xs mb-4">
-
+                        <div class="border rounded-lg p-4 bg-white shadow relative">
+                            <a href="../registro_producto.php?categoria_id=<?php echo $row['id']; ?>" class="block hover:bg-gray-100 p-4">
+                                <h3 class="text-xl font-bold mb-2 text-[#191d20]"><?php echo $row["nombre_categoria"]; ?></h3>
+                                <p class="text-[#404040] mb-2"><?php echo $row["descripcion_categoria"]; ?></p>
+                                <img src="../img/<?php echo basename($row["imagen_categoria"]); ?>" class="max-w-xs max-h-xs mb-4">
+                            </a>
                             <!-- Botón Eliminar -->
                             <form method="POST" action="eliminar_categoria.php" onsubmit="return confirm('¿Estás seguro de que deseas eliminar esta categoría?');" class="inline-block">
                                 <input type="hidden" name="id" value="<?php echo $row["id"]; ?>">
                                 <button type="submit" class="bg-[#ed2839] hover:bg-[#dfded9] text-[#191d20] font-bold py-2 px-4 rounded">Eliminar</button>
                             </form>
-
-                            <!-- Botón Actualizar y Formulario de Actualización (inicialmente oculto) -->
+                            <!-- Botón Actualizar -->
                             <button onclick="toggleForm('<?php echo $row["id"]; ?>')" class="bg-blue-500 hover:bg-blue-700 text-black font-bold py-2 px-4 rounded mt-2">Actualizar</button>
-                            <form id="form-<?php echo $row["id"]; ?>" onsubmit="return enviarFormulario('<?php echo $row["id"]; ?>')" method="POST" class="form-actualizar bg-gray-100 rounded-lg p-4 mb-4 shadow" style="display: none;" enctype="multipart/form-data">
+                            <!-- Formulario de Actualización (inicialmente oculto) -->
+                            <form id="form-<?php echo $row["id"]; ?>" method="POST" action="actualizar_categoria.php" class="form-actualizar bg-gray-100 rounded-lg p-4 mb-4 shadow absolute inset-0 flex flex-col justify-center items-center" style="display: none;" enctype="multipart/form-data">
                                 <input type="hidden" name="id" value="<?php echo $row["id"]; ?>">
                                 <input type="text" name="nombre" value="<?php echo htmlspecialchars($row["nombre_categoria"]); ?>" class="form-input bg-gray-200 border-2 border-gray-300 py-2 px-4 rounded-md block w-full mb-2" placeholder="Nombre de la categoría">
                                 <textarea name="descripcion" class="form-textarea bg-gray-200 border-2 border-gray-300 py-2 px-4 rounded-md block w-full mb-2" rows="4" placeholder="Descripción"><?php echo htmlspecialchars($row["descripcion_categoria"]); ?></textarea>
                                 <input type="file" name="imagen" class="form-input bg-gray-200 border-2 border-gray-300 py-2 px-4 rounded-md block w-full mb-2">
                                 <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Guardar cambios</button>
+                                <button type="button" onclick="toggleForm('<?php echo $row["id"]; ?>')" class="mt-2 bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">Cancelar</button>
                             </form>
                         </div>
                         <?php
@@ -85,6 +87,17 @@ include 'conexion.php';
             </div>
         </div>
     </div>
+
+    <script>
+        function toggleForm(id) {
+            var form = document.getElementById('form-' + id);
+            if (form.style.display === 'none' || form.style.display === '') {
+                form.style.display = 'flex';
+            } else {
+                form.style.display = 'none';
+            }
+        }
+    </script>
 </body>
 
 </html>

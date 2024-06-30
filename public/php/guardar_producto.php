@@ -1,5 +1,8 @@
 <?php
-include 'conexion.php'; // Incluir archivo de conexión
+include 'conexion.php'; // Asegúrate de que la ruta al archivo de conexión es correcta
+
+$categoria_id = $_POST["categoria_id"];
+$status_message = "";
 
 // Verificar si se ha enviado el formulario y los campos obligatorios están presentes
 if ($_SERVER["REQUEST_METHOD"] == "POST" && !empty($_FILES["imagen"]["name"]) && !empty($_POST["nombre"]) && !empty($_POST["descripcion"]) && !empty($_POST["precio"]) && !empty($_POST["categoria_id"])) {
@@ -28,17 +31,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && !empty($_FILES["imagen"]["name"]) &&
                 VALUES ('$nombre', '$descripcion', '$precio', '$ruta_imagen', '$categoria_id')";
 
         if ($conn->query($sql) === TRUE) {
-            echo "El producto se registró correctamente.";
+            $status_message = "El producto se registró correctamente.";
         } else {
-            echo "Error: " . $sql . "<br>" . $conn->error;
+            $status_message = "Error: " . $sql . "<br>" . $conn->error;
         }
     } else {
-        echo "Error al subir el archivo.";
+        $status_message = "Error al subir el archivo.";
     }
 } else {
-    echo "Todos los campos son obligatorios.";
+    $status_message = "Todos los campos son obligatorios.";
 }
 
 // Cerrar conexión
 $conn->close();
+
+// Redirigir de vuelta al formulario con el mensaje de estado
+header("Location: ../registro_producto.php?categoria_id=$categoria_id&status=" . urlencode($status_message));
+exit;
 ?>
