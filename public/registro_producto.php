@@ -2,7 +2,7 @@
 include 'php/conexion.php';
 
 // Obtener el id de la categoría de la URL
-$categoria_id = isset($_GET['categoria_id']) ? $_GET['categoria_id'] : 0;
+$categoria_id = isset($_GET['categoria_id']) ? intval($_GET['categoria_id']) : 0;  // Asegúrate de que es un entero
 $status = isset($_GET['status']) ? $_GET['status'] : '';
 
 if ($categoria_id == 0) {
@@ -12,6 +12,10 @@ if ($categoria_id == 0) {
 // Obtener los productos de la categoría
 $sql_productos = "SELECT id, nombre_producto, descripcion_producto, precio_producto, imagen_producto FROM productos WHERE categoria_id = $categoria_id";
 $result_productos = $conn->query($sql_productos);
+
+if (!$result_productos) {
+    die("Error en la consulta SQL: " . $conn->error);
+}
 ?>
 
 <!DOCTYPE html>
@@ -22,9 +26,21 @@ $result_productos = $conn->query($sql_productos);
     <title>Registro y Lista de Productos</title>
     <!-- Incluir Tailwind CSS -->
     <link rel="stylesheet" href="css/tailwind.css"> <!-- Asegúrate de que este enlace apunte correctamente a Tailwind CSS -->
-    <link rel="stylesheet" href="css/styles.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> <!-- Incluir SweetAlert -->
- 
+    <script>
+        function showAlert(message, icon) {
+            Swal.fire({
+                title: 'Estado del Registro',
+                text: message,
+                icon: icon,
+                confirmButtonText: 'OK'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = 'registro_producto.php?categoria_id=<?php echo $categoria_id; ?>';
+                }
+            });
+        }
+    </script>
 </head>
 <body class="bg-center bg-cover" style="background-image: url('img/fondo.jpg'); background-size: 40%; background-position: center;">
     <!-- Barra de navegación -->
@@ -97,20 +113,10 @@ $result_productos = $conn->query($sql_productos);
                             <img src="img/<?php echo basename($producto["imagen_producto"]); ?>" class="max-w-xs max-h-xs mb-4">
                             <div class="flex justify-between mt-4">
                                 <!-- Botón Actualizar -->
-                                <button onclick="toggleForm('<?php echo $producto["id"]; ?>')" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Actualizar</button>
+                                <a href="./php/actualizar_producto.php?id=<?php echo $producto["id"]; ?>" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Actualizar</a>
                                 <!-- Botón Eliminar -->
                                 <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">Eliminar</button>
                             </div>
-                            <!-- Formulario de Actualización (inicialmente oculto) -->
-                            <form id="form-<?php echo $producto["id"]; ?>" method="POST" action="actualizar_producto.php" class="form-actualizar bg-gray-100 rounded-lg p-4 mb-4 shadow absolute inset-0 flex flex-col justify-center items-center" style="display: none;" enctype="multipart/form-data">
-                                <input type="hidden" name="id" value="<?php echo $producto["id"]; ?>">
-                                <input type="text" name="nombre" value="<?php echo htmlspecialchars($producto["nombre_producto"]); ?>" class="form-input bg-gray-200 border-2 border-gray-300 py-2 px-4 rounded-md block w-full mb-2" placeholder="Nombre del producto">
-                                <textarea name="descripcion" class="form-textarea bg-gray-200 border-2 border-gray-300 py-2 px-4 rounded-md block w-full mb-2" rows="4" placeholder="Descripción"><?php echo htmlspecialchars($producto["descripcion_producto"]); ?></textarea>
-                                <input type="file" name="imagen" class="form-input bg-gray-200 border-2 border-gray-300 py-2 px-4 rounded-md block w-full mb-2">
-                                <input type="number" step="0.01" name="precio" value="<?php echo htmlspecialchars($producto["precio_producto"]); ?>" class="form-input bg-gray-200 border-2 border-gray-300 py-2 px-4 rounded-md block w-full mb-2" placeholder="Precio del producto">
-                                <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Guardar cambios</button>
-                                <button type="button" onclick="toggleForm('<?php echo $producto["id"]; ?>')" class="mt-2 bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">Cancelar</button>
-                            </form>
                         </div>
                         <?php
                     }
@@ -126,22 +132,9 @@ $result_productos = $conn->query($sql_productos);
 
     <?php if (!empty($status)) { ?>
         <script>
-                function showAlert(message) {
-            Swal.fire({
-                title: 'Estado del Registro',
-                text: message,
-                icon: message.includes('correctamente') ? 'success' : 'error',
-                confirmButtonText: 'OK'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    window.location.href = 'registro_producto.php?categoria_id=<?php echo $categoria_id; ?>';
-                }
-            });
-        }
             document.addEventListener('DOMContentLoaded', function() {
-                showAlert('<?php echo $status; ?>');
+                showAlert('<?php echo $status; ?>', '<?php echo strpos($status, "correctamente") !== false ? 'success' : 'error'; ?>');
             });
-            
         </script>
     <?php } ?>
 </body>
