@@ -6,7 +6,7 @@ $id_producto = isset($_GET['id']) ? intval($_GET['id']) : 0;
 $categoria_id = isset($_GET['categoria_id']) ? intval($_GET['categoria_id']) : 0;
 
 if ($id_producto == 0 || $categoria_id == 0) {
-    die("Error: No se recibió el ID del producto o de la categoría");
+    die("Error: No se recibió el ID del producto o de la categoría.");
 }
 
 // Obtener los datos del producto
