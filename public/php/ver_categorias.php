@@ -54,9 +54,11 @@ include 'conexion.php';
                         ?>
                         <div class="border rounded-lg p-4 bg-white shadow relative">
                             <a href="../registro_producto.php?categoria_id=<?php echo $row['id']; ?>" class="block hover:bg-gray-100 p-4">
-                                <h3 class="text-xl font-bold mb-2 text-[#191d20]"><?php echo $row["nombre_categoria"]; ?></h3>
+                                <h3 class="text-xl font-bold mb-2 text-[#191d20] break-words"><?php echo $row["nombre_categoria"]; ?></h3>
                                 <p class="text-[#404040] mb-2"><?php echo $row["descripcion_categoria"]; ?></p>
-                                <img src="../img/<?php echo basename($row["imagen_categoria"]); ?>" class="max-w-xs max-h-xs mb-4">
+                                <div class="w-full h-48 flex justify-center items-center">
+                                    <img src="../img/<?php echo basename($row["imagen_categoria"]); ?>" class="max-w-full h-auto object-contain">
+                                </div>
                             </a>
                             <!-- Botón Eliminar -->
                             <form method="POST" action="eliminar_categoria.php" onsubmit="return confirm('¿Estás seguro de que deseas eliminar esta categoría?');" class="inline-block">

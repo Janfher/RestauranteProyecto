@@ -24,7 +24,7 @@ $result_productos = $conn->query($sql_productos);
     <link rel="stylesheet" href="css/tailwind.css"> <!-- Asegúrate de que este enlace apunte correctamente a Tailwind CSS -->
     <link rel="stylesheet" href="css/styles.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> <!-- Incluir SweetAlert -->
- 
+    <script src="./js/Formulario_producto.js"></script>
 </head>
 <body class="bg-center bg-cover" style="background-image: url('img/fondo.jpg'); background-size: 40%; background-position: center;">
     <!-- Barra de navegación -->
@@ -50,20 +50,27 @@ $result_productos = $conn->query($sql_productos);
 
     <!-- Contenido principal -->
     <div class="max-w-4xl mx-auto py-12 sm:px-6 lg:px-8 text-[#191d20] space-y-8">
+        <!-- Botón para mostrar/ocultar formulario -->
+        <div class="text-center">
+            <button id="toggle-form-button" class="px-8 py-4 bg-[#ed2839] text-white rounded-lg cursor-pointer text-2xl font-bold hover:bg-[#4A4A4A]">Registrar un Producto</button>
+        </div>
+
         <!-- Formulario de Registro de Producto -->
-        <div class="bg-white rounded-lg overflow-hidden shadow-md p-6">
-            <h2 class="text-2xl font-bold text-center p-4 bg-[#191d20] text-white">Registro de Nuevo Producto</h2>
-            <form action="php/guardar_producto.php" method="post" enctype="multipart/form-data" class="p-4">
+        <div id="form-container" class="bg-white rounded-lg overflow-hidden shadow-md">
+            <div class="bg-[#191d20] text-white rounded-t-lg p-4">
+                <h2 class="text-2xl font-bold text-center">Registrar Nuevo Producto</h2>
+            </div>
+            <form action="php/guardar_producto.php" method="post" enctype="multipart/form-data" class="p-6">
                 <input type="hidden" name="categoria_id" value="<?php echo htmlspecialchars($categoria_id); ?>">
-                
+
                 <div class="mb-4">
                     <label for="nombre" class="block text-[#191d20] font-bold mb-2">Nombre del Producto:</label>
-                    <input type="text" id="nombre" name="nombre" required class="w-full px-3 py-2 border rounded-lg text-[#2E2E2E] focus:outline-none focus:border-blue-500">
+                    <input type="text" id="nombre" name="nombre" required class="w-full px-3 py-2 border rounded-lg text-[#2E2E2E] focus:outline-none focus:border-blue-500"maxlength="50">
                 </div>
 
                 <div class="mb-4">
                     <label for="descripcion" class="block text-[#191d20] font-bold mb-2">Descripción del Producto:</label>
-                    <textarea id="descripcion" name="descripcion" rows="4" required class="w-full px-3 py-2 border rounded-lg text-[#2E2E2E] focus:outline-none focus:border-blue-500"></textarea>
+                    <textarea id="descripcion" name="descripcion" rows="4" required class="w-full px-3 py-2 border rounded-lg text-[#2E2E2E] focus:outline-none focus:border-blue-500" maxlength="200"></textarea>
                 </div>
 
                 <div class="mb-4">
@@ -83,23 +90,27 @@ $result_productos = $conn->query($sql_productos);
         </div>
 
         <!-- Productos de la categoría -->
-        <div class="bg-[#dfded9] rounded-lg overflow-hidden shadow-md p-6">
-            <h3 class="text-xl font-bold text-center p-4 bg-[#ed2839] text-white">Productos en la Categoría</h3>
+        <div class="bg-[#dfded9] rounded-lg overflow-hidden shadow-md">
+            <div class="bg-[#ed2839] text-white rounded-t-lg p-4">
+                <h3 class="text-xl font-bold text-center">Productos en la Categoría</h3>
+            </div>
             <div class="p-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 <?php
                 if ($result_productos->num_rows > 0) {
                     while ($producto = $result_productos->fetch_assoc()) {
                         ?>
                         <div class="border rounded-lg p-4 bg-white shadow relative">
-                            <h3 class="text-xl font-bold mb-2 text-[#191d20]"><?php echo $producto["nombre_producto"]; ?></h3>
+                            <h3 class="text-xl font-bold mb-2 text-[#191d20] break-words whitespace-normal"><?php echo $producto["nombre_producto"]; ?></h3>
                             <p class="text-[#404040] mb-2 break-words whitespace-normal"><?php echo $producto["descripcion_producto"]; ?></p>
                             <p class="text-[#191d20] font-bold mb-2">$<?php echo $producto["precio_producto"]; ?></p>
-                            <img src="img/<?php echo basename($producto["imagen_producto"]); ?>" class="max-w-xs max-h-xs mb-4">
+                            <div class="w-full h-48 overflow-hidden flex justify-center items-center">
+                                <img src="img/<?php echo basename($producto["imagen_producto"]); ?>" class="max-w-full max-h-full object-contain">
+                            </div>
                             <div class="flex justify-between mt-4">
-                                <!-- Botón Actualizar -->
-                                <button onclick="toggleForm('<?php echo $producto["id"]; ?>')" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Actualizar</button>
                                 <!-- Botón Eliminar -->
-                                <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">Eliminar</button>
+                                <button class="bg-red-500 hover:bg-red-700 text-black font-bold py-2 px-4 rounded">Eliminar</button>&nbsp
+                                <!-- Botón Actualizar -->
+                                <button class="bg-blue-500 hover:bg-blue-700 text-black font-bold py-2 px-4 rounded">Actualizar</button>
                             </div>
                             <!-- Formulario de Actualización (inicialmente oculto) -->
                             <form id="form-<?php echo $producto["id"]; ?>" method="POST" action="actualizar_producto.php" class="form-actualizar bg-gray-100 rounded-lg p-4 mb-4 shadow absolute inset-0 flex flex-col justify-center items-center" style="display: none;" enctype="multipart/form-data">
@@ -122,26 +133,24 @@ $result_productos = $conn->query($sql_productos);
                 ?>
             </div>
         </div>
-    </div>
 
     <?php if (!empty($status)) { ?>
         <script>
-                function showAlert(message) {
-            Swal.fire({
-                title: 'Estado del Registro',
-                text: message,
-                icon: message.includes('correctamente') ? 'success' : 'error',
-                confirmButtonText: 'OK'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    window.location.href = 'registro_producto.php?categoria_id=<?php echo $categoria_id; ?>';
-                }
-            });
-        }
+            function showAlert(message) {
+                Swal.fire({
+                    title: 'Estado del Registro',
+                    text: message,
+                    icon: message.includes('correctamente') ? 'success' : 'error',
+                    confirmButtonText: 'OK'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = 'registro_producto.php?categoria_id=<?php echo $categoria_id; ?>';
+                    }
+                });
+            }
             document.addEventListener('DOMContentLoaded', function() {
                 showAlert('<?php echo $status; ?>');
             });
-            
         </script>
     <?php } ?>
 </body>
