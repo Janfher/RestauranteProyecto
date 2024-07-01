@@ -2,6 +2,7 @@
 include 'conexion.php';
 
 $id_producto = $_POST['id'];
+$categoria_id = $_POST['categoria_id'];
 $status_message = "";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST" && !empty($_POST["nombre"]) && !empty($_POST["descripcion"]) && !empty($_POST["precio"])) {
@@ -16,7 +17,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && !empty($_POST["nombre"]) && !empty($
         $ruta_imagen = $upload_dir . basename($imagen);
         if (!move_uploaded_file($imagen_tmp, $ruta_imagen)) {
             $status_message = "Error al subir la imagen.";
-            header("Location: actualizar_producto.php?id=$id_producto&status=" . urlencode($status_message));
+            header("Location: actualizar_producto.php?id=$id_producto&categoria_id=$categoria_id&status=" . urlencode($status_message));
             exit;
         }
         $sql = "UPDATE productos SET nombre_producto='$nombre', descripcion_producto='$descripcion', precio_producto='$precio', imagen_producto='$ruta_imagen' WHERE id=$id_producto";

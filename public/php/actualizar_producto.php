@@ -1,11 +1,12 @@
 <?php
 include 'conexion.php';
 
-// Obtener el id del producto de la URL
+// Obtener el id del producto y la categoría de la URL
 $id_producto = isset($_GET['id']) ? intval($_GET['id']) : 0;
+$categoria_id = isset($_GET['categoria_id']) ? intval($_GET['categoria_id']) : 0;
 
-if ($id_producto == 0) {
-    die("Error: No se recibió el ID del producto.");
+if ($id_producto == 0 || $categoria_id == 0) {
+    die("Error: No se recibió el ID del producto o de la categoría.");
 }
 
 // Obtener los datos del producto
@@ -90,6 +91,7 @@ if (!$producto) {
             <h2 class="text-2xl font-bold text-center p-4 bg-[#191d20] text-white">Actualizar Producto</h2>
             <form action="actualizar_producto_procesar.php" method="post" enctype="multipart/form-data" class="p-4" onsubmit="return validateForm(this);">
                 <input type="hidden" name="id" value="<?php echo $id_producto; ?>">
+                <input type="hidden" name="categoria_id" value="<?php echo $categoria_id; ?>">
                 
                 <div class="mb-4">
                     <label for="nombre" class="block text-[#191d20] font-bold mb-2">Nombre del Producto:</label>

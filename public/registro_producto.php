@@ -2,7 +2,7 @@
 include 'php/conexion.php';
 
 // Obtener el id de la categoría de la URL
-$categoria_id = isset($_GET['categoria_id']) ? intval($_GET['categoria_id']) : 0;  // Asegúrate de que es un entero
+$categoria_id = isset($_GET['categoria_id']) ? intval($_GET['categoria_id']) : 0;
 $status = isset($_GET['status']) ? $_GET['status'] : '';
 
 if ($categoria_id == 0) {
@@ -113,7 +113,7 @@ if (!$result_productos) {
                             <img src="img/<?php echo basename($producto["imagen_producto"]); ?>" class="max-w-xs max-h-xs mb-4">
                             <div class="flex justify-between mt-4">
                                 <!-- Botón Actualizar -->
-                                <a href="./php/actualizar_producto.php?id=<?php echo $producto["id"]; ?>" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Actualizar</a>
+                                <a href="php/actualizar_producto.php?id=<?php echo $producto["id"]; ?>&categoria_id=<?php echo $categoria_id; ?>" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Actualizar</a>
                                 <!-- Botón Eliminar -->
                                 <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">Eliminar</button>
                             </div>
