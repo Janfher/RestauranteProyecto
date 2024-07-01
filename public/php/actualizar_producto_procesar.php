@@ -1,5 +1,5 @@
 <?php
-include 'conexion.php';
+include 'conexion.ph';
 
 $id_producto = $_POST['id'];
 $categoria_id = $_POST['categoria_id'];
