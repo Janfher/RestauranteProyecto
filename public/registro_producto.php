@@ -110,18 +110,8 @@ $result_productos = $conn->query($sql_productos);
                                 <!-- Botón Eliminar -->
                                 <button class="bg-red-500 hover:bg-red-700 text-black font-bold py-2 px-4 rounded">Eliminar</button>&nbsp
                                 <!-- Botón Actualizar -->
-                                <button class="bg-blue-500 hover:bg-blue-700 text-black font-bold py-2 px-4 rounded">Actualizar</button>
+                                <a href="php/actualizar_producto.php?id=<?php echo $producto["id"]; ?>&categoria_id=<?php echo $categoria_id; ?>" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Actualizar</a>
                             </div>
-                            <!-- Formulario de Actualización (inicialmente oculto) -->
-                            <form id="form-<?php echo $producto["id"]; ?>" method="POST" action="actualizar_producto.php" class="form-actualizar bg-gray-100 rounded-lg p-4 mb-4 shadow absolute inset-0 flex flex-col justify-center items-center" style="display: none;" enctype="multipart/form-data">
-                                <input type="hidden" name="id" value="<?php echo $producto["id"]; ?>">
-                                <input type="text" name="nombre" value="<?php echo htmlspecialchars($producto["nombre_producto"]); ?>" class="form-input bg-gray-200 border-2 border-gray-300 py-2 px-4 rounded-md block w-full mb-2" placeholder="Nombre del producto">
-                                <textarea name="descripcion" class="form-textarea bg-gray-200 border-2 border-gray-300 py-2 px-4 rounded-md block w-full mb-2" rows="4" placeholder="Descripción"><?php echo htmlspecialchars($producto["descripcion_producto"]); ?></textarea>
-                                <input type="file" name="imagen" class="form-input bg-gray-200 border-2 border-gray-300 py-2 px-4 rounded-md block w-full mb-2">
-                                <input type="number" step="0.01" name="precio" value="<?php echo htmlspecialchars($producto["precio_producto"]); ?>" class="form-input bg-gray-200 border-2 border-gray-300 py-2 px-4 rounded-md block w-full mb-2" placeholder="Precio del producto">
-                                <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Guardar cambios</button>
-                                <button type="button" onclick="toggleForm('<?php echo $producto["id"]; ?>')" class="mt-2 bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">Cancelar</button>
-                            </form>
                         </div>
                         <?php
                     }
