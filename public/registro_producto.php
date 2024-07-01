@@ -108,7 +108,7 @@ $result_productos = $conn->query($sql_productos);
                             </div>
                             <div class="flex justify-between mt-4">
                                 <!-- Botón Eliminar -->
-                                <button class="bg-red-500 hover:bg-red-700 text-black font-bold py-2 px-4 rounded">Eliminar</button>&nbsp
+                                <button class="bg-red-500 hover:bg-red-700 text-black font-bold py-2 px-4 rounded">Elimina</button>&nbsp
                                 <!-- Botón Actualizar -->
                                 <a href="php/actualizar_producto.php?id=<?php echo $producto["id"]; ?>&categoria_id=<?php echo $categoria_id; ?>" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Actualizar</a>
                             </div>
