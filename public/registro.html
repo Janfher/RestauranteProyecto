@@ -4,25 +4,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registro de Usuario</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="css/tailwind.css" rel="stylesheet">
     <script defer src="./js/registro.js"></script>
+    <script defer src="./js/error_registro.js"></script> <!-- Script añadido -->
 </head>
 <body class="bg-center bg-cover min-h-screen" style="background-image: url('img/fondo.jpg'); background-size: 40%; background-position: center;">
     <!-- Barra de navegación -->
-    <nav class="text-white font-bold shadow-md bg-black">
+    <nav class="text-black font-bold shadow-md bg-[#dfded9]">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-16">
                 <div class="flex">
                     <div class="flex-shrink-0 flex items-center">
-                        <a href="../index.html">
-                            <img class="h-12 w-auto rounded-full border-2 border-[#ed2839]" src="img/logo.jpg" alt="Logo">
-                        </a>
+                        
+                        <img class="h-12 w-auto rounded-full border-2 border-[#ed2839]" src="img/logo.jpg" alt="Logo">
+                        
                         <h1 class="text-3xl font-bold text-[#191d20] text-center ml-4">Carne al Fuego</h1>
                     </div>
                 </div>
                 <div class="flex items-center">
                     <a href="inicio_sesion.php" class="inline-flex items-center">
-                        <img src="img/logo2.png" alt="Registrar Usuario" class="h-12 w-auto rounded-full border-2 border-[#ed2839]">
+                        <img src="img/logo2.png" alt="Registrar Usuario" class="h-12 w-auto rounded-full border-2 border-[#ed2839]">Inicio de Sesion
                     </a>
                 </div>
             </div>
@@ -31,8 +32,12 @@
 
     <!-- Contenido principal -->
     <div class="flex justify-center items-center min-h-screen">
-        <div class="max-w-3xl bg-white rounded-lg overflow-hidden shadow-md mx-auto p-6">
-            <h2 class="text-2xl font-bold text-center p-4 bg-[#191d20] text-black ">Registro de Usuario</h2>
+        <div class="max-w-md bg-white rounded-lg overflow-hidden shadow-md mx-auto">
+            <h2 class="text-2xl font-bold text-center p-4 bg-[#191d20] text-white">Registro de Nueva Categoría</h2>
+            <!-- Mostrar mensajes de error y éxito si existen -->
+            <div id="mensaje" class="p-4 bg-[#dfded9] border-b border-gray-200"></div>
+            <div id="errorMessage" class="text-red-500 text-center"></div>
+            <div id="successMessage" class="text-green-500 text-center"></div>
             <form id="registroForm" action="../public/php/registro.php" method="POST" class="p-4">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div class="mb-4">

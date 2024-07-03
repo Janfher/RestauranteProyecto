@@ -30,8 +30,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $stmt->bind_param('sssssss', $cedula, $firstName, $lastName, $email, $password, $telefono, $perfil);
 
     if ($stmt->execute()) {
-        // Redirigir al usuario a la página principal después del registro exitoso
-        header('Location: ../index.html');
+        // Redirigir al usuario a la página principal después del registro exitoso con un mensaje de éxito
+        header('Location: ../registro.html?success=Usuario registrado exitosamente');
         exit;
     } else {
         echo 'Error: ' . $stmt->error;

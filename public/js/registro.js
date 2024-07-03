@@ -7,3 +7,12 @@ document.getElementById('registroForm').addEventListener('submit', function(even
         event.preventDefault();
     }
 });
+
+function validateInput(input) {
+    var pattern = new RegExp(input.pattern);
+    if (!pattern.test(input.value)) {
+        input.nextElementSibling.textContent = 'Ingrese datos validos';
+    } else {
+        input.nextElementSibling.textContent = '';
+    }
+}
