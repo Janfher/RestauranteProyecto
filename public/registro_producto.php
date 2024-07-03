@@ -111,7 +111,7 @@ $result_productos = $conn->query($sql_productos);
                                 <!-- Botón Eliminar -->
                                 <button class="bg-red-500 hover:bg-red-700 text-black font-bold py-2 px-4 rounded eliminar-producto" data-id="<?php echo $producto['id']; ?>">Eliminar</button>&nbsp
                                 <!-- Botón Actualizar -->
-                                <button class="bg-blue-500 hover:bg-blue-700 text-black font-bold py-2 px-4 rounded">Actualizar</button>
+                                <a href="php/actualizar_producto.php?id=<?php echo $producto["id"]; ?>&categoria_id=<?php echo $categoria_id; ?>" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Actualizar</a>
                             </div>
                             <!-- Formulario de Actualización (inicialmente oculto) -->
                             <form id="form-<?php echo $producto["id"]; ?>" method="POST" action="actualizar_producto.php" class="form-actualizar bg-gray-100 rounded-lg p-4 mb-4 shadow absolute inset-0 flex flex-col justify-center items-center" style="display: none;" enctype="multipart/form-data">
