@@ -2,6 +2,8 @@
 // Conexión a la base de datos
 include 'conexion.php';
 
+$status = "";
+
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $cedula = $_POST['cedula'];
     $firstName = $_POST['firstName'];
@@ -30,10 +32,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $stmt->bind_param('sssssss', $cedula, $firstName, $lastName, $email, $password, $telefono, $perfil);
 
     if ($stmt->execute()) {
-        // Redirigir al usuario a la página principal después del registro exitoso con un mensaje de éxito
-        header('Location: ../registro.html?success=Usuario registrado exitosamente');
-        exit;
+        // Registro exitoso
+        $status = "Usuario registrado exitosamente";
     } else {
+        // Error en el registro
+        $status = "Error al registrar usuario";
         echo 'Error: ' . $stmt->error;
     }
 
@@ -41,4 +44,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 }
 
 $conn->close();
+
+// Redirigir con el mensaje de estado
+header('Location: ../registro.html?status=' . urlencode($status));
+exit;
 ?>
+
