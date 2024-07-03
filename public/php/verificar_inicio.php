@@ -30,11 +30,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 exit();
             } elseif ($perfil == 'Cliente') {
                 $_SESSION['rol'] = 'cliente';
-                header("Location: ver_categorias.php"); // Redirigir al panel de cliente
+                header("Location: php/ver_categorias.php"); // Redirigir al panel de cliente
                 exit();
             } elseif ($perfil == 'Empleado') {
                 $_SESSION['rol'] = 'empleado';
-                header("Location: ver_categorias.php"); // Redirigir al panel de empleado
+                header("Location: php/ver_categorias.php"); // Redirigir al panel de empleado
                 exit();
             } else {
                 $error = "El rol del usuario no está definido.";
