@@ -26,7 +26,6 @@
                     echo '<img src="../img/' . basename($row["imagen_producto"]) . '" class="max-w-xs max-h-xs mb-4">';
                     echo '<form method="POST" action="eliminar_producto.php" onsubmit="return confirm(\'¿Estás seguro de que deseas eliminar este producto?\');" class="inline-block">';
                     echo '<input type="hidden" name="id" value="' . $row["id"] . '">';
-                    echo '<button type="submit" class="bg-[#ed2839] hover:bg-[#dfded9] text-[#191d20] font-bold py-2 px-4 rounded">Eliminar</button>';
                     echo '</form>';
                     echo '</div>';
                 }

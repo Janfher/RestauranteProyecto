@@ -25,6 +25,7 @@ $result_productos = $conn->query($sql_productos);
     <link rel="stylesheet" href="css/styles.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> <!-- Incluir SweetAlert -->
     <script src="./js/Formulario_producto.js"></script>
+    <script src="./js/eliminar_producto.js"></script> <!-- Incluir el nuevo archivo JavaScript -->
 </head>
 <body class="bg-center bg-cover" style="background-image: url('img/fondo.jpg'); background-size: 40%; background-position: center;">
     <!-- Barra de navegación -->
@@ -108,7 +109,7 @@ $result_productos = $conn->query($sql_productos);
                             </div>
                             <div class="flex justify-between mt-4">
                                 <!-- Botón Eliminar -->
-                                <button class="bg-red-500 hover:bg-red-700 text-black font-bold py-2 px-4 rounded">Eliminar</button>&nbsp
+                                <button class="bg-red-500 hover:bg-red-700 text-black font-bold py-2 px-4 rounded eliminar-producto" data-id="<?php echo $producto['id']; ?>">Eliminar</button>&nbsp
                                 <!-- Botón Actualizar -->
                                 <button class="bg-blue-500 hover:bg-blue-700 text-black font-bold py-2 px-4 rounded">Actualizar</button>
                             </div>
