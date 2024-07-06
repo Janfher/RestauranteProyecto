@@ -22,7 +22,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         if ($contrasena == $row['password']) {
             // Verificar el rol del usuario
             $perfil = $row['perfil'];
-            $_SESSION['correo'] = $correo;
+            $_SESSION['correo'] = $correo;  // Guardar correo en sesión
+            $_SESSION['cedula'] = $row['cedula']; // Guardar cédula en sesión si es necesario
 
             if ($perfil == 'Administrador') {
                 $_SESSION['rol'] = 'administrador';
@@ -30,7 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 exit();
             } elseif ($perfil == 'Cliente') {
                 $_SESSION['rol'] = 'cliente';
-                header("Location: php/ver_categorias.php"); // Redirigir al panel de cliente
+                header("Location: php/cliente_usuario.php"); // Redirigir al panel de cliente
                 exit();
             } elseif ($perfil == 'Empleado') {
                 $_SESSION['rol'] = 'empleado';

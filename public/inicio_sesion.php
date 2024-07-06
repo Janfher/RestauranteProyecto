@@ -6,6 +6,7 @@
     <title>Iniciar Sesión</title>
     <link rel="stylesheet" href="../css/tailwind.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
 </head>
 <body class="bg-center bg-cover" style="background-image: url('../img/fondo.jpg'); background-size: 40%; background-position: center;">
     <nav class="bg-[#dfded9] shadow-md">
