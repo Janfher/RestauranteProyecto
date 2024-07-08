@@ -5,6 +5,7 @@
     <title>Productos Registrados</title>
     <link rel="stylesheet" href="../css/tailwind.css"> <!-- Enlace correcto a Tailwind CSS -->
 </head>
+
 <body class="bg-gray-100 py-12 px-4 sm:px-6 lg:px-8 text-[#191d20]">
     <div class="max-w-4xl mx-auto bg-[#dfded9] rounded-lg overflow-hidden shadow-md">
         <h2 class="text-2xl font-bold text-center p-4 bg-[#ed2839] text-white">Productos Registrados</h2>
