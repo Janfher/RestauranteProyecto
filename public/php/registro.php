@@ -5,6 +5,7 @@ include 'conexion.php';
 $status = "";
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    // Obtener todas las variables POST y realizar la conexión a la base de datos
     $cedula = $_POST['cedula'];
     $firstName = $_POST['firstName'];
     $lastName = $_POST['lastName'];
@@ -13,19 +14,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $telefono = $_POST['telefono'];
     $perfil = $_POST['perfil'];
 
-    // Verificar si el usuario ya existe
-    $checkUserStmt = $conn->prepare('SELECT cedula FROM Usuarios WHERE cedula = ?');
-    $checkUserStmt->bind_param('s', $cedula);
-    $checkUserStmt->execute();
-    $checkUserStmt->store_result();
+    // Verificar si el perfil es Administrador y validar el código de registro
+    if ($perfil === 'Administrador') {
+        $codigo = $_POST['codigo'];
 
-    if ($checkUserStmt->num_rows > 0) {
-        // El usuario ya está registrado, redirigir al formulario de registro con un mensaje de error en la URL
-        header('Location: ../registro.html?error=Usuario ya registrado');
-        exit;
+        // Validar el código de registro
+        if ($codigo !== '1234567k') {
+            // Redirigir con mensaje de error si el código no es correcto
+            header('Location: ../registro.html?error=Código de registro incorrecto');
+            exit;
+        }
     }
-
-    $checkUserStmt->close();
 
     // Insertar nuevo usuario
     $stmt = $conn->prepare('INSERT INTO Usuarios (cedula, firstName, lastName, email, password, telefono, perfil) VALUES (?, ?, ?, ?, ?, ?, ?)');
@@ -49,4 +48,3 @@ $conn->close();
 header('Location: ../registro.html?status=' . urlencode($status));
 exit;
 ?>
-

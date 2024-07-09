@@ -27,7 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             if ($perfil == 'Administrador') {
                 $_SESSION['rol'] = 'administrador';
-                header("Location: ../inicio.html"); // Redirigir al panel de administrador
+                header("Location: ./inicio.html"); // Redirigir al panel de administrador
                 exit();
             } elseif ($perfil == 'Cliente') {
                 $_SESSION['rol'] = 'cliente';
