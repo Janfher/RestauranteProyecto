@@ -3,7 +3,7 @@ session_start();
 
 // Verificar si el usuario ha iniciado sesión
 if (!isset($_SESSION['correo'])) {
-    header('Location: ../inicio_Secion.php');
+    header('Location: ../inicio_sesion.php');
     exit();
 }
 
@@ -37,6 +37,21 @@ if ($result->num_rows > 0) {
     exit();
 }
 
+// Eliminar usuario si se ha solicitado
+if (isset($_POST['delete'])) {
+    $sql = "DELETE FROM usuarios WHERE email = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("s", $correo);
+    if ($stmt->execute()) {
+        session_destroy();
+        header('Location: ../inicio_sesion.php?status=' . urlencode('Cuenta eliminada exitosamente'));
+        exit();
+    } else {
+        header('Location: perfil_usuario.php?status=' . urlencode('Error al eliminar la cuenta'));
+        exit();
+    }
+}
+
 $conn->close();
 ?>
 
@@ -47,6 +62,42 @@ $conn->close();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Perfil del Usuario</title>
     <link href="../css/tailwind.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        function showAlert(message) {
+            Swal.fire({
+                title: 'Estado del Registro',
+                text: message,
+                icon: message.includes('exitosamente') ? 'success' : 'error',
+                confirmButtonText: 'OK'
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const status = urlParams.get('status');
+            
+            if (status) {
+                showAlert(decodeURIComponent(status));
+            }
+        });
+
+        function confirmDeletion() {
+            Swal.fire({
+                title: '¿Estás seguro?',
+                text: "¡No podrás revertir esto!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Sí, eliminarlo!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById('delete-form').submit();
+                }
+            })
+        }
+    </script>
 </head>
 <body class="bg-center bg-cover" style="background-image: url('../img/fondo.jpg'); background-size: 40%; background-position: center;">
 
@@ -100,6 +151,13 @@ $conn->close();
                     <p class="text-lg font-semibold bg-blue-500 text-white p-4 rounded">Perfil:</p>
                     <p class="text-lg bg-gray-200 p-4 rounded"><?php echo $perfil; ?></p>
                 </div>
+            </div>
+            <!-- Botón de eliminación -->
+            <div class="mt-8 text-center">
+                <form id="delete-form" method="post">
+                    <button type="button" onclick="confirmDeletion()" class="bg-red-500 text-white px-4 py-2 rounded">Eliminar Cuenta</button>
+                    <input type="hidden" name="delete" value="1">
+                </form>
             </div>
         </div>
     </div>

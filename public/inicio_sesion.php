@@ -1,3 +1,10 @@
+<?php
+
+$status = isset($_GET['status']) ? urldecode($_GET['status']) : '';
+$error = !empty($_SESSION['error']) ? $_SESSION['error'] : '';
+unset($_SESSION['error']);
+?>
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -6,7 +13,6 @@
     <title>Iniciar Sesión</title>
     <link rel="stylesheet" href="./css/tailwind.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    
 </head>
 <body class="bg-center bg-cover" style="background-image: url('./img/fondo.jpg'); background-size: 40%; background-position: center;">
     <nav class="bg-[#dfded9] shadow-md">
@@ -41,6 +47,15 @@
                         icon: 'error',
                         title: 'Error',
                         text: '<?php echo $error; ?>',
+                    });
+                </script>
+            <?php endif; ?>
+            <?php if (!empty($status)): ?>
+                <script>
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Éxito',
+                        text: '<?php echo $status; ?>',
                     });
                 </script>
             <?php endif; ?>
