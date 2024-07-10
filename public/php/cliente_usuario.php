@@ -13,7 +13,7 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16 items-center"> <!-- Alineado a la derecha -->
             <div class="flex items-center space-x-4">
-                <a href="../index.html">
+                <a href="cliente_usuario.php">
                     <img class="h-12 w-auto rounded-full border-2 border-[#ed2839]" src="../img/logo.jpg" alt="Logo">
                 </a>
                 <h1 class="text-3xl font-bold text-[#191d20]">Carne al Fuego</h1>

@@ -3,7 +3,7 @@ session_start();
 
 // Verificar si el usuario ha iniciado sesión
 if (!isset($_SESSION['correo'])) {
-    header('Location: ../inicio_sesion.php');
+    header('Location: ../inicio_Secion.php');
     exit();
 }
 
@@ -63,41 +63,6 @@ $conn->close();
     <title>Perfil del Usuario</title>
     <link href="../css/tailwind.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script>
-        function showAlert(message) {
-            Swal.fire({
-                title: 'Estado del Registro',
-                text: message,
-                icon: message.includes('exitosamente') ? 'success' : 'error',
-                confirmButtonText: 'OK'
-            });
-        }
-
-        document.addEventListener('DOMContentLoaded', function() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const status = urlParams.get('status');
-            
-            if (status) {
-                showAlert(decodeURIComponent(status));
-            }
-        });
-
-        function confirmDeletion() {
-            Swal.fire({
-                title: '¿Estás seguro?',
-                text: "¡No podrás revertir esto!",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Sí, eliminarlo!'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    document.getElementById('delete-form').submit();
-                }
-            })
-        }
-    </script>
 </head>
 <body class="bg-center bg-cover" style="background-image: url('../img/fondo.jpg'); background-size: 40%; background-position: center;">
 
@@ -127,30 +92,31 @@ $conn->close();
         <div class="bg-white shadow-md rounded-lg p-6">
             <h2 class="text-2xl font-bold mb-8 text-center bg-[#191d20] text-white p-4 rounded">Perfil del Usuario</h2>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div class="bg-gray-50 p-4 rounded-lg shadow-inner">
-                    <p class="text-lg font-semibold bg-blue-500 text-white p-4 rounded">Cédula:</p>
-                    <p class="text-lg bg-gray-200 p-4 rounded"><?php echo $cedula; ?></p>
-                </div>
-                <div class="bg-gray-50 p-4 rounded-lg shadow-inner">
-                    <p class="text-lg font-semibold bg-blue-500 text-white p-4 rounded">Nombre:</p>
-                    <p class="text-lg bg-gray-200 p-4 rounded"><?php echo $firstName; ?></p>
-                </div>
-                <div class="bg-gray-50 p-4 rounded-lg shadow-inner">
-                    <p class="text-lg font-semibold bg-blue-500 text-white p-4 rounded">Apellido:</p>
-                    <p class="text-lg bg-gray-200 p-4 rounded"><?php echo $lastName; ?></p>
-                </div>
-                <div class="bg-gray-50 p-4 rounded-lg shadow-inner">
-                    <p class="text-lg font-semibold bg-blue-500 text-white p-4 rounded">Email:</p>
-                    <p class="text-lg bg-gray-200 p-4 rounded"><?php echo $email; ?></p>
-                </div>
-                <div class="bg-gray-50 p-4 rounded-lg shadow-inner">
-                    <p class="text-lg font-semibold bg-blue-500 text-white p-4 rounded">Teléfono:</p>
-                    <p class="text-lg bg-gray-200 p-4 rounded"><?php echo $telefono; ?></p>
-                </div>
-                <div class="bg-gray-50 p-4 rounded-lg shadow-inner">
-                    <p class="text-lg font-semibold bg-blue-500 text-white p-4 rounded">Perfil:</p>
-                    <p class="text-lg bg-gray-200 p-4 rounded"><?php echo $perfil; ?></p>
-                </div>
+                <?php
+                $fields = [
+                    'cedula' => 'Cédula',
+                    'firstName' => 'Nombre',
+                    'lastName' => 'Apellido',
+                    'email' => 'Email',
+                    'telefono' => 'Teléfono',
+                    'perfil' => 'Perfil'
+                ];
+                foreach ($fields as $field => $label) {
+                    echo '<div class="bg-gray-50 p-4 rounded-lg shadow-inner">';
+                    echo '<p class="text-lg font-semibold bg-blue-500 text-white p-4 rounded flex justify-between">';
+                    echo $label;
+
+                    if ($field !== 'perfil' && $field !== 'email') {
+                        echo '<button onclick="editField(\'' . $field . '\', \'' . $row[$field] . '\')" class="ml-2 text-gray-800">';
+                        echo '<img src="../img/lapiz.png" class="h-4 w-4" alt="Editar">';
+                        echo '</button>';
+                    }
+
+                    echo '</p>';
+                    echo '<p id="' . $field . '-value" class="text-lg bg-gray-200 p-4 rounded">' . $row[$field] . '</p>';
+                    echo '</div>';
+                }
+                ?>
             </div>
             <!-- Botón de eliminación -->
             <div class="mt-8 text-center">
@@ -161,5 +127,123 @@ $conn->close();
             </div>
         </div>
     </div>
+
+    <script>
+        function confirmDeletion() {
+            Swal.fire({
+                title: '¿Estás seguro?',
+                text: "¡No podrás revertir esto!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Sí, eliminarlo!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById('delete-form').submit();
+                }
+            })
+        }
+        
+        const fieldTranslations = {
+            'cedula': 'Cédula',
+            'firstName': 'Nombre',
+            'lastName': 'Apellido',
+            'email': 'Email',
+            'telefono': 'Teléfono',
+            'perfil': 'Perfil'
+        };
+
+        function editField(field, currentValue) {
+            const fieldLabel = fieldTranslations[field] || field;
+
+            let inputAttributes = {};
+
+            if (field === 'cedula' || field === 'telefono') {
+                inputAttributes = {
+                    maxlength: 10,
+                    pattern: "\\d*"
+                };
+            } else if (field === 'firstName' || field === 'lastName') {
+                inputAttributes = {
+                    pattern: "^[a-zA-ZÀ-ÿ\\s]+$"
+                };
+            }
+
+            Swal.fire({
+                title: 'Editar ' + fieldLabel,
+                input: 'text',
+                inputValue: currentValue,
+                inputAttributes: inputAttributes,
+                showCancelButton: true,
+                confirmButtonText: 'Guardar',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    let value = result.value;
+                    
+                    if ((field === 'firstName' || field === 'lastName') && !/^[a-zA-ZÀ-ÿ\s]+$/.test(value)) {
+                        Swal.fire({
+                            title: 'Error',
+                            text: 'El campo solo debe contener letras y espacios.',
+                            icon: 'error',
+                            confirmButtonText: 'OK'
+                        });
+                        return;
+                    }
+
+                    if ((field === 'cedula' || field === 'telefono') && !/^\d{1,10}$/.test(value)) {
+                        Swal.fire({
+                            title: 'Error',
+                            text: 'El campo debe ser un número de hasta 10 dígitos.',
+                            icon: 'error',
+                            confirmButtonText: 'OK'
+                        });
+                        return;
+                    }
+
+                    // Actualizar el valor en el DOM
+                    document.getElementById(field + '-value').innerText = value;
+
+                    // Enviar los datos al servidor para actualizar en la base de datos
+                    fetch('actualizar_usuario.php', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            field: field,
+                            value: value
+                        })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.status === 'success') {
+                            Swal.fire({
+                                title: '¡Modificado con éxito!',
+                                icon: 'success',
+                                confirmButtonText: 'OK'
+                            });
+                        } else {
+                            Swal.fire({
+                                title: 'Error',
+                                text: data.message,
+                                icon: 'error',
+                                confirmButtonText: 'OK'
+                            });
+                        }
+                    })
+                    .catch(error => {
+                        Swal.fire({
+                            title: 'Error',
+                            text: 'Ocurrió un error al actualizar los datos',
+                            icon: 'error',
+                            confirmButtonText: 'OK'
+                        });
+                    });
+                }
+            });
+        }
+    </script>
 </body>
 </html>
